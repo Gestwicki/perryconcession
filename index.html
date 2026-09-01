@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,56 +20,268 @@
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; user-select: none; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-  .app-container { width: 100%; max-width: 480px; height: 100%; display: flex; flex-direction: column; background: var(--bg-main); }
+  
+  html, body {
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background: var(--bg-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-main);
+    overflow: hidden;
+  }
 
   /* Header */
-  header { background: #000000; padding: 12px 16px; text-align: center; border-bottom: 2px solid var(--gold); }
-  header h1 { font-size: 1.1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+  header {
+    background: #000000;
+    padding: 10px 14px;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-size: 1.05rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 
   /* Category Navigation */
-  .category-tabs { display: flex; background: #000; padding: 6px; gap: 6px; border-bottom: 1px solid #334155; }
-  .tab-btn { flex: 1; padding: 12px 4px; background: transparent; border: 1px solid #334155; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; }
-  .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+  .category-tabs {
+    display: flex;
+    background: #000;
+    padding: 6px;
+    gap: 6px;
+    border-bottom: 1px solid #334155;
+    flex-shrink: 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 4px;
+    background: transparent;
+    border: 1px solid #334155;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .tab-btn.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
 
-  /* Screen Content */
-  .screen { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  /* Scrollable Grid Viewport */
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
   .hidden { display: none !important; }
 
   /* Menu Items Grid */
-  .items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .item-card { background: var(--card-bg); border: 2px solid #334155; border-radius: 8px; min-height: 85px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8px; cursor: pointer; }
-  .item-card.has-qty { border-color: var(--gold); background: var(--card-active); justify-content: space-between; padding: 6px; }
-  .item-name { font-size: 0.9rem; font-weight: 700; line-height: 1.2; }
-  .item-price { font-size: 0.85rem; color: var(--gold); margin-top: 4px; font-weight: 600; }
+  .items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .item-card {
+    background: var(--card-bg);
+    border: 2px solid #334155;
+    border-radius: 8px;
+    min-height: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6px;
+    cursor: pointer;
+  }
+  .item-card.has-qty {
+    border-color: var(--gold);
+    background: var(--card-active);
+    justify-content: space-between;
+    padding: 6px;
+  }
+  .item-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .item-price {
+    font-size: 0.82rem;
+    color: var(--gold);
+    margin-top: 3px;
+    font-weight: 600;
+  }
 
   /* Stepper Inside Button */
-  .stepper { display: flex; width: 100%; justify-content: space-between; align-items: center; background: #000; border-radius: 6px; padding: 2px; margin-top: 4px; }
-  .step-btn { background: #1e293b; border: 1px solid #475569; color: #fff; font-size: 1.2rem; font-weight: bold; width: 38px; height: 34px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .step-btn.del { color: var(--red); border-color: var(--red); font-size: 1rem; }
-  .qty-count { font-size: 1.1rem; font-weight: 800; color: var(--gold); width: 28px; text-align: center; }
+  .stepper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background: #000;
+    border-radius: 6px;
+    padding: 2px;
+    margin-top: 4px;
+  }
+  .step-btn {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 38px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-btn.del {
+    color: var(--red);
+    border-color: var(--red);
+    font-size: 1rem;
+  }
+  .qty-count {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--gold);
+    width: 28px;
+    text-align: center;
+  }
 
-  /* Sticky Footer Summary */
-  .footer-summary { background: #000; padding: 12px 14px; border-top: 2px solid #334155; display: flex; flex-direction: column; gap: 8px; }
-  .summary-row { display: flex; justify-content: space-between; align-items: center; }
-  .summary-count { font-size: 0.85rem; color: var(--text-muted); }
-  .summary-total { font-size: 1.5rem; font-weight: 900; color: var(--green); }
+  /* Pinned Bottom Footer */
+  .footer-summary {
+    background: #000;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 2px solid #334155;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .summary-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .summary-total {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--green);
+  }
 
-  .action-buttons { display: flex; gap: 8px; }
-  .btn { padding: 14px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .btn-clear { background: var(--red); color: white; width: 30%; }
-  .btn-proceed { background: var(--gold); color: #000; width: 70%; text-transform: uppercase; }
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-clear {
+    background: var(--red);
+    color: white;
+    width: 32%;
+  }
+  .btn-proceed {
+    background: var(--gold);
+    color: #000;
+    width: 68%;
+    text-transform: uppercase;
+  }
 
   /* Cash Tendered Screen */
-  .cash-card { background: var(--card-bg); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #334155; }
-  .cash-row { display: flex; justify-content: space-between; font-size: 1.1rem; color: var(--text-muted); }
+  .cash-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #334155;
+  }
+  .cash-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+  }
   .cash-row strong { color: #fff; }
-  .change-row { display: flex; justify-content: space-between; font-size: 1.6rem; font-weight: 900; color: var(--green); border-top: 1px solid #475569; padding-top: 8px; margin-top: 4px; }
+  .change-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--green);
+    border-top: 1px solid #475569;
+    padding-top: 6px;
+    margin-top: 2px;
+  }
   
-  .denom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-  .denom-btn { background: #065f46; border: 2px solid var(--green); color: #fff; font-size: 1.3rem; font-weight: 800; padding: 16px; border-radius: 8px; cursor: pointer; }
-  .denom-btn:active { background: var(--green); color: #000; }
-  .util-btn { background: #334155; border: 1px solid #64748b; color: #fff; font-size: 0.95rem; font-weight: 700; padding: 12px; border-radius: 8px; cursor: pointer; }
+  .denom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .denom-btn {
+    background: #065f46;
+    border: 2px solid var(--green);
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 800;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .denom-btn:active {
+    background: var(--green);
+    color: #000;
+  }
+  .util-btn {
+    background: #334155;
+    border: 1px solid #64748b;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -87,7 +299,7 @@
       <button class="tab-btn" onclick="switchCategory('drinks', this)">DRINKS</button>
     </div>
 
-    <div class="screen">
+    <div class="screen-content">
       <div class="items-grid" id="itemsGrid"></div>
     </div>
 
@@ -104,7 +316,7 @@
   </div>
 
   <!-- SCREEN 2: CASH PAYMENT -->
-  <div id="screenCash" class="screen hidden">
+  <div id="screenCash" class="screen-content hidden" style="display:flex; flex-direction:column; gap:8px;">
     <div class="cash-card">
       <div class="cash-row"><span>Total Due:</span><strong id="payTotalDue">$0.00</strong></div>
       <div class="cash-row"><span>Cash Tendered:</span><strong id="payTendered">$0.00</strong></div>
@@ -118,12 +330,12 @@
       <button class="denom-btn" onclick="addCash(1)">+$1</button>
     </div>
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
       <button class="util-btn" onclick="exactCash()">EXACT CASH</button>
       <button class="util-btn" onclick="resetCash()">RESET CASH</button>
     </div>
 
-    <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+    <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px; padding-bottom:env(safe-area-inset-bottom, 8px);">
       <button class="btn" style="background:#334155; color:#fff;" onclick="backToOrder()">&larr; BACK TO ORDER</button>
       <button class="btn btn-proceed" style="width:100%;" onclick="newTransaction()">NEW TRANSACTION</button>
     </div>
