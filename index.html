@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Perry Pit Stop Calculator</title>
+<style>
+  :root {
+    --bg-main: #0f172a;
+    --card-bg: #1e293b;
+    --card-active: #334155;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; user-select: none; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+  .app-container { width: 100%; max-width: 480px; height: 100%; display: flex; flex-direction: column; background: var(--bg-main); }
+
+  /* Header */
+  header { background: #000000; padding: 12px 16px; text-align: center; border-bottom: 2px solid var(--gold); }
+  header h1 { font-size: 1.1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Category Navigation */
+  .category-tabs { display: flex; background: #000; padding: 6px; gap: 6px; border-bottom: 1px solid #334155; }
+  .tab-btn { flex: 1; padding: 12px 4px; background: transparent; border: 1px solid #334155; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; }
+  .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  /* Screen Content */
+  .screen { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .hidden { display: none !important; }
+
+  /* Menu Items Grid */
+  .items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .item-card { background: var(--card-bg); border: 2px solid #334155; border-radius: 8px; min-height: 85px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8px; cursor: pointer; }
+  .item-card.has-qty { border-color: var(--gold); background: var(--card-active); justify-content: space-between; padding: 6px; }
+  .item-name { font-size: 0.9rem; font-weight: 700; line-height: 1.2; }
+  .item-price { font-size: 0.85rem; color: var(--gold); margin-top: 4px; font-weight: 600; }
+
+  /* Stepper Inside Button */
+  .stepper { display: flex; width: 100%; justify-content: space-between; align-items: center; background: #000; border-radius: 6px; padding: 2px; margin-top: 4px; }
+  .step-btn { background: #1e293b; border: 1px solid #475569; color: #fff; font-size: 1.2rem; font-weight: bold; width: 38px; height: 34px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .step-btn.del { color: var(--red); border-color: var(--red); font-size: 1rem; }
+  .qty-count { font-size: 1.1rem; font-weight: 800; color: var(--gold); width: 28px; text-align: center; }
+
+  /* Sticky Footer Summary */
+  .footer-summary { background: #000; padding: 12px 14px; border-top: 2px solid #334155; display: flex; flex-direction: column; gap: 8px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; }
+  .summary-count { font-size: 0.85rem; color: var(--text-muted); }
+  .summary-total { font-size: 1.5rem; font-weight: 900; color: var(--green); }
+
+  .action-buttons { display: flex; gap: 8px; }
+  .btn { padding: 14px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .btn-clear { background: var(--red); color: white; width: 30%; }
+  .btn-proceed { background: var(--gold); color: #000; width: 70%; text-transform: uppercase; }
+
+  /* Cash Tendered Screen */
+  .cash-card { background: var(--card-bg); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #334155; }
+  .cash-row { display: flex; justify-content: space-between; font-size: 1.1rem; color: var(--text-muted); }
+  .cash-row strong { color: #fff; }
+  .change-row { display: flex; justify-content: space-between; font-size: 1.6rem; font-weight: 900; color: var(--green); border-top: 1px solid #475569; padding-top: 8px; margin-top: 4px; }
+  
+  .denom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .denom-btn { background: #065f46; border: 2px solid var(--green); color: #fff; font-size: 1.3rem; font-weight: 800; padding: 16px; border-radius: 8px; cursor: pointer; }
+  .denom-btn:active { background: var(--green); color: #000; }
+  .util-btn { background: #334155; border: 1px solid #64748b; color: #fff; font-size: 0.95rem; font-weight: 700; padding: 12px; border-radius: 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <h1 id="headerTitle">Perry Pit Stop Menu</h1>
+  </header>
+
+  <!-- SCREEN 1: MENU -->
+  <div id="screenMenu" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+    <div class="category-tabs">
+      <button class="tab-btn active" onclick="switchCategory('hotfood', this)">HOT FOOD</button>
+      <button class="tab-btn" onclick="switchCategory('snacks', this)">SNACKS</button>
+      <button class="tab-btn" onclick="switchCategory('drinks', this)">DRINKS</button>
+    </div>
+
+    <div class="screen">
+      <div class="items-grid" id="itemsGrid"></div>
+    </div>
+
+    <div class="footer-summary">
+      <div class="summary-row">
+        <span class="summary-count" id="totalItemCount">0 items selected</span>
+        <span class="summary-total" id="menuTotalDisplay">$0.00</span>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-clear" onclick="clearAllItems()">CLEAR</button>
+        <button class="btn btn-proceed" onclick="goToCashScreen()">TOTAL & PAY &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: CASH PAYMENT -->
+  <div id="screenCash" class="screen hidden">
+    <div class="cash-card">
+      <div class="cash-row"><span>Total Due:</span><strong id="payTotalDue">$0.00</strong></div>
+      <div class="cash-row"><span>Cash Tendered:</span><strong id="payTendered">$0.00</strong></div>
+      <div class="change-row"><span>CHANGE DUE:</span><span id="payChangeDue">$0.00</span></div>
+    </div>
+
+    <div class="denom-grid">
+      <button class="denom-btn" onclick="addCash(20)">+$20</button>
+      <button class="denom-btn" onclick="addCash(10)">+$10</button>
+      <button class="denom-btn" onclick="addCash(5)">+$5</button>
+      <button class="denom-btn" onclick="addCash(1)">+$1</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
+      <button class="util-btn" onclick="exactCash()">EXACT CASH</button>
+      <button class="util-btn" onclick="resetCash()">RESET CASH</button>
+    </div>
+
+    <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+      <button class="btn" style="background:#334155; color:#fff;" onclick="backToOrder()">&larr; BACK TO ORDER</button>
+      <button class="btn btn-proceed" style="width:100%;" onclick="newTransaction()">NEW TRANSACTION</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const menuData = [
+  // Hot Food
+  { id: 1, cat: 'hotfood', name: "All Beef Hot Dog", price: 3.00, qty: 0 },
+  { id: 2, cat: 'hotfood', name: "Coney Dog", price: 6.00, qty: 0 },
+  { id: 3, cat: 'hotfood', name: "Walking Taco", price: 8.00, qty: 0 },
+  { id: 4, cat: 'hotfood', name: "Chips & Cheese", price: 3.00, qty: 0 },
+  { id: 5, cat: 'hotfood', name: "Loaded Chips & Cheese", price: 8.00, qty: 0 },
+  { id: 6, cat: 'hotfood', name: "Pretzel Bites & Cheese", price: 4.00, qty: 0 },
+  { id: 7, cat: 'hotfood', name: "Slice of Pizza", price: 2.50, qty: 0 },
+  { id: 8, cat: 'hotfood', name: "Whole Pizza", price: 18.00, qty: 0 },
+
+  // Snacks & Sweets
+  { id: 9, cat: 'snacks', name: "Popcorn", price: 3.00, qty: 0 },
+  { id: 10, cat: 'snacks', name: "Candy (Skittles/Star/Sour/Nerds)", price: 2.50, qty: 0 },
+  { id: 11, cat: 'snacks', name: "Airheads", price: 0.50, qty: 0 },
+  { id: 12, cat: 'snacks', name: "Cookies (2-pack)", price: 2.00, qty: 0 },
+  { id: 13, cat: 'snacks', name: "Bag of Chips", price: 1.00, qty: 0 },
+
+  // Drinks
+  { id: 14, cat: 'drinks', name: "Cold Drink (20oz / Water)", price: 3.00, qty: 0 },
+  { id: 15, cat: 'drinks', name: "Coffee / Hot Chocolate", price: 2.00, qty: 0 }
+];
+
+let activeCategory = 'hotfood';
+let cashTendered = 0.00;
+
+function switchCategory(category, tabElement) {
+  activeCategory = category;
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  tabElement.classList.add('active');
+  renderMenu();
+}
+
+function renderMenu() {
+  const grid = document.getElementById('itemsGrid');
+  grid.innerHTML = '';
+
+  const filtered = menuData.filter(i => i.cat === activeCategory);
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    if (item.qty === 0) {
+      card.className = 'item-card';
+      card.onclick = () => updateItemQty(item.id, 1);
+      card.innerHTML = `
+        <div class="item-name">${item.name}</div>
+        <div class="item-price">$${item.price.toFixed(2)}</div>
+      `;
+    } else {
+      card.className = 'item-card has-qty';
+      const minusContent = item.qty === 1 ? '🗑' : '-';
+      const delClass = item.qty === 1 ? 'del' : '';
+      card.innerHTML = `
+        <div class="item-name">${item.name}</div>
+        <div class="item-price">$${(item.price * item.qty).toFixed(2)} ($${item.price.toFixed(2)} ea)</div>
+        <div class="stepper">
+          <button class="step-btn ${delClass}" onclick="event.stopPropagation(); updateItemQty(${item.id}, -1)">${minusContent}</button>
+          <span class="qty-count">${item.qty}</span>
+          <button class="step-btn" onclick="event.stopPropagation(); updateItemQty(${item.id}, 1)">+</button>
+        </div>
+      `;
+    }
+    grid.appendChild(card);
+  });
+
+  updateMenuSummary();
+}
+
+function updateItemQty(id, delta) {
+  const item = menuData.find(i => i.id === id);
+  if (item) {
+    item.qty = Math.max(0, item.qty + delta);
+    renderMenu();
+  }
+}
+
+function getOrderTotal() {
+  return menuData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+}
+
+function getTotalItemsCount() {
+  return menuData.reduce((sum, item) => sum + item.qty, 0);
+}
+
+function updateMenuSummary() {
+  const total = getOrderTotal();
+  const count = getTotalItemsCount();
+  document.getElementById('menuTotalDisplay').textContent = `$${total.toFixed(2)}`;
+  document.getElementById('totalItemCount').textContent = `${count} item${count === 1 ? '' : 's'} selected`;
+}
+
+function clearAllItems() {
+  menuData.forEach(item => item.qty = 0);
+  renderMenu();
+}
+
+function goToCashScreen() {
+  const total = getOrderTotal();
+  if (total === 0) return;
+  document.getElementById('screenMenu').classList.add('hidden');
+  document.getElementById('screenCash').classList.remove('hidden');
+  document.getElementById('headerTitle').textContent = "Cash Payment";
+  document.getElementById('payTotalDue').textContent = `$${total.toFixed(2)}`;
+  resetCash();
+}
+
+function backToOrder() {
+  document.getElementById('screenCash').classList.add('hidden');
+  document.getElementById('screenMenu').classList.remove('hidden');
+  document.getElementById('headerTitle').textContent = "Perry Pit Stop Menu";
+}
+
+function addCash(amount) {
+  cashTendered += amount;
+  updateCashDisplay();
+}
+
+function exactCash() {
+  cashTendered = getOrderTotal();
+  updateCashDisplay();
+}
+
+function resetCash() {
+  cashTendered = 0;
+  updateCashDisplay();
+}
+
+function updateCashDisplay() {
+  const total = getOrderTotal();
+  const change = Math.max(0, cashTendered - total);
+  document.getElementById('payTendered').textContent = `$${cashTendered.toFixed(2)}`;
+  document.getElementById('payChangeDue').textContent = `$${change.toFixed(2)}`;
+}
+
+function newTransaction() {
+  clearAllItems();
+  resetCash();
+  backToOrder();
+}
+
+renderMenu();
+</script>
+</body>
+</html>
