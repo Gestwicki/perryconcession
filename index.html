@@ -49,13 +49,13 @@
   /* Header */
   header {
     background: #000000;
-    padding: 10px 14px;
+    padding: 8px 12px;
     text-align: center;
     border-bottom: 2px solid var(--gold);
     flex-shrink: 0;
   }
   header h1 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--gold);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -72,7 +72,7 @@
   }
   .tab-btn {
     flex: 1;
-    padding: 10px 4px;
+    padding: 9px 4px;
     background: transparent;
     border: 1px solid #334155;
     color: var(--text-muted);
@@ -107,7 +107,7 @@
     background: var(--card-bg);
     border: 2px solid #334155;
     border-radius: 8px;
-    min-height: 78px;
+    min-height: 76px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -123,14 +123,14 @@
     padding: 6px;
   }
   .item-name {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 700;
     line-height: 1.2;
   }
   .item-price {
-    font-size: 0.82rem;
+    font-size: 0.80rem;
     color: var(--gold);
-    margin-top: 3px;
+    margin-top: 2px;
     font-weight: 600;
   }
 
@@ -151,8 +151,8 @@
     color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
-    width: 38px;
-    height: 32px;
+    width: 36px;
+    height: 30px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -165,22 +165,22 @@
     font-size: 1rem;
   }
   .qty-count {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 800;
     color: var(--gold);
-    width: 28px;
+    width: 26px;
     text-align: center;
   }
 
   /* Pinned Bottom Footer */
   .footer-summary {
     background: #000;
-    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
     border-top: 2px solid #334155;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
   .summary-row {
     display: flex;
@@ -188,11 +188,11 @@
     align-items: center;
   }
   .summary-count {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
   }
   .summary-total {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
     font-weight: 900;
     color: var(--green);
   }
@@ -202,7 +202,7 @@
     gap: 8px;
   }
   .btn {
-    padding: 12px;
+    padding: 11px;
     border: none;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -224,48 +224,87 @@
     text-transform: uppercase;
   }
 
-  /* Cash Tendered Screen */
-  .cash-card {
+  /* Screen 2: Cash & Runner Layout */
+  .runner-box {
     background: var(--card-bg);
+    border: 2px solid var(--gold);
     border-radius: 8px;
-    padding: 12px;
+    padding: 8px 10px;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    flex-shrink: 0;
+  }
+  .runner-title {
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .runner-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 84px;
+    overflow-y: auto;
+  }
+  .runner-badge {
+    background: var(--gold);
+    color: #000000;
+    font-size: 0.92rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.1;
+  }
+
+  .cash-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     border: 1px solid #334155;
+    flex-shrink: 0;
   }
   .cash-row {
     display: flex;
     justify-content: space-between;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--text-muted);
   }
   .cash-row strong { color: #fff; }
   .change-row {
     display: flex;
     justify-content: space-between;
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 900;
     color: var(--green);
     border-top: 1px solid #475569;
-    padding-top: 6px;
+    padding-top: 4px;
     margin-top: 2px;
   }
   
+  /* Shortened Bill Buttons for Zero-Scroll Fit */
   .denom-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 6px;
+    flex-shrink: 0;
   }
   .denom-btn {
     background: #065f46;
     border: 2px solid var(--green);
     color: #fff;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 800;
-    padding: 14px;
-    border-radius: 8px;
+    padding: 8px 4px;
+    min-height: 42px;
+    border-radius: 6px;
     cursor: pointer;
   }
   .denom-btn:active {
@@ -276,10 +315,11 @@
     background: #334155;
     border: 1px solid #64748b;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 8px 4px;
+    min-height: 38px;
+    border-radius: 6px;
     cursor: pointer;
   }
 </style>
@@ -315,14 +355,21 @@
     </div>
   </div>
 
-  <!-- SCREEN 2: CASH PAYMENT -->
+  <!-- SCREEN 2: CASH PAYMENT & RUNNER CALLOUT -->
   <div id="screenCash" class="screen-content hidden" style="display:flex; flex-direction:column; gap:8px;">
+    <!-- ZERO-TAP RUNNER CALLOUT -->
+    <div class="runner-box">
+      <span class="runner-title">Runner Order (Call Out)</span>
+      <div class="runner-badges" id="runnerBadgesList"></div>
+    </div>
+
     <div class="cash-card">
       <div class="cash-row"><span>Total Due:</span><strong id="payTotalDue">$0.00</strong></div>
       <div class="cash-row"><span>Cash Tendered:</span><strong id="payTendered">$0.00</strong></div>
       <div class="change-row"><span>CHANGE DUE:</span><span id="payChangeDue">$0.00</span></div>
     </div>
 
+    <!-- SHORTENED DENOMINATION BUTTONS -->
     <div class="denom-grid">
       <button class="denom-btn" onclick="addCash(20)">+$20</button>
       <button class="denom-btn" onclick="addCash(10)">+$10</button>
@@ -330,14 +377,14 @@
       <button class="denom-btn" onclick="addCash(1)">+$1</button>
     </div>
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
       <button class="util-btn" onclick="exactCash()">EXACT CASH</button>
       <button class="util-btn" onclick="resetCash()">RESET CASH</button>
     </div>
 
-    <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px; padding-bottom:env(safe-area-inset-bottom, 8px);">
-      <button class="btn" style="background:#334155; color:#fff;" onclick="backToOrder()">&larr; BACK TO ORDER</button>
-      <button class="btn btn-proceed" style="width:100%;" onclick="newTransaction()">NEW TRANSACTION</button>
+    <div style="margin-top:auto; display:flex; flex-direction:column; gap:6px; padding-bottom:env(safe-area-inset-bottom, 6px);">
+      <button class="btn" style="background:#334155; color:#fff; padding:10px;" onclick="backToOrder()">&larr; BACK TO ORDER</button>
+      <button class="btn btn-proceed" style="width:100%; padding:12px;" onclick="newTransaction()">NEW TRANSACTION</button>
     </div>
   </div>
 </div>
@@ -438,9 +485,25 @@ function clearAllItems() {
   renderMenu();
 }
 
+function renderRunnerCallout() {
+  const container = document.getElementById('runnerBadgesList');
+  container.innerHTML = '';
+  const orderedItems = menuData.filter(i => i.qty > 0);
+  
+  orderedItems.forEach(item => {
+    const badge = document.createElement('span');
+    badge.className = 'runner-badge';
+    badge.textContent = `${item.qty}x ${item.name}`;
+    container.appendChild(badge);
+  });
+}
+
 function goToCashScreen() {
   const total = getOrderTotal();
   if (total === 0) return;
+  
+  renderRunnerCallout();
+  
   document.getElementById('screenMenu').classList.add('hidden');
   document.getElementById('screenCash').classList.remove('hidden');
   document.getElementById('headerTitle').textContent = "Cash Payment";
@@ -482,6 +545,7 @@ function newTransaction() {
   backToOrder();
 }
 
+// Initial application load
 renderMenu();
 </script>
 </body>
